@@ -1,15 +1,16 @@
+import { Link } from "react-router-dom";
 export default function MovieCard({ movie }) {
-  const { title, director, genre, release_year, abstract, image } = movie;
+  const { title, director, genre, release_year, abstract, image, id } = movie;
 
   return (
     <div className="card bg-dark text-white border-secondary h-100 overflow-hidden">
       <img
-        src={image}
+        src={`http://localhost:3000/movies_cover/${image}`}
         className="card-img-top"
         alt="Titolo film"
         style={{
           height: "260px",
-          objectFit: "cover",
+          objectFit: "contain",
         }}
       />
 
@@ -24,7 +25,12 @@ export default function MovieCard({ movie }) {
         <p className="card-text text-light flex-grow-1">{abstract}</p>
 
         <button className="btn btn-danger align-self-start">
-          Scopri di più
+          <Link
+            to={`/movie/${id}`}
+            className="btn btn-danger align-self-start text-white text-decoration-none"
+          >
+            Scopri di più
+          </Link>
         </button>
       </div>
     </div>
