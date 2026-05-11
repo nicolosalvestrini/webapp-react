@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import FormReview from "../components/FormReview";
 import ReviewCard from "../components/ReviewCard";
 
 function DetailPage() {
@@ -56,10 +57,22 @@ function DetailPage() {
             </div>
           </div>
 
-          <div>
-            {movieReviews.reviews?.map((review) => (
-              <ReviewCard key={review.id} review={review} />
-            ))}
+          <div className="row g-4 mt-5">
+            <div className="col-12 col-lg-8">
+              <div className="card bg-dark border-secondary text-white">
+                <div className="card-body">
+                  <h3 className="fw-bold mb-4">Recensioni</h3>
+
+                  {movieReviews.reviews?.map((review) => (
+                    <ReviewCard key={review.id} review={review} />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="col-12 col-lg-4">
+              <FormReview />
+            </div>
           </div>
         </div>
       </main>
