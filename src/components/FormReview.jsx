@@ -1,32 +1,39 @@
 import axios from "axios";
-import {useState } from "react";
+import { useState } from "react";
 
-export default function ReviewForm() {
-    const [formData, setFormData] = useState(initialFormData);
+export default function ReviewForm({ movieId, onReviewSubmit }) {
+  const initialFormData = {
+    name: "",
+    vote: 1,
+    text: "",
+  };
 
-    const initialFormData = {
-        name: "",
-        vote: 1,
-        text: ""
-    };
+  const [formData, setFormData] = useState(initialFormData);
 
-    const handleInputChange = (event) => {
-        const { name, value } = event.target;
-        
-        setFormData({...formData, [name]: value });
-    };
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        axios.post("http://localhost:3000/reviews", formData)
-            .then((response) => {
-                console.log("Recensione inviata con successo:", response.data);
-                setFormData(initialFormData);
-            })
-            .catch((error) => {
-                console.error("Errore durante l'invio della recensione:", error);
-            });
-    }
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    axios
+      .post(`http://localhost:3000/movies/${movieId}`, {
+        ...formData,
+      })
+      .then((response) => {
+        console.log("Recensione inviata:", response.data);
+        setFormData(initialFormData);
+
+        if (onReviewSubmit) {
+          onReviewSubmit();
+        }
+      })
+      .catch((error) => {
+        console.error("Errore durante l'invio:", error);
+      });
+  };
 
   return (
     <div className="card bg-dark text-white border-secondary rounded-4 shadow">
@@ -34,9 +41,7 @@ export default function ReviewForm() {
         <h3 className="fw-bold mb-4">Scrivi una recensione</h3>
 
         <div className="mb-3">
-          <label className="form-label text-light">
-            La tua valutazione
-          </label>
+          <label className="form-label text-light">La tua valutazione</label>
 
           <input
             type="number"
@@ -51,9 +56,7 @@ export default function ReviewForm() {
         </div>
 
         <div className="mb-3">
-          <label className="form-label text-light">
-            Nome
-          </label>
+          <label className="form-label text-light">Nome</label>
 
           <input
             type="text"
@@ -66,9 +69,7 @@ export default function ReviewForm() {
         </div>
 
         <div className="mb-4">
-          <label className="form-label text-light">
-            La tua recensione
-          </label>
+          <label className="form-label text-light">La tua recensione</label>
 
           <textarea
             className="form-control bg-black text-white border-secondary"
@@ -81,7 +82,11 @@ export default function ReviewForm() {
         </div>
 
         <div className="d-flex justify-content-end">
-          <button type="button" className="btn btn-danger px-4 py-2 fw-semibold">
+          <button
+            type="button"
+            className="btn btn-danger px-4 py-2 fw-semibold"
+            onClick={handleSubmit}
+          >
             Invia recensione
           </button>
         </div>

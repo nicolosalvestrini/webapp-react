@@ -71,7 +71,8 @@ function DetailPage() {
             </div>
 
             <div className="col-12 col-lg-4">
-              <FormReview />
+              <FormReview movieId={id} onReviewSubmit={fetchMovieReviews} />
+
             </div>
           </div>
         </div>
